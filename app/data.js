@@ -3,22 +3,35 @@ export const NavLinkPaths = [
   {
     title: "Home",
     path: "/",
+    content: null,
   },
   {
     title: "Events",
     path: "/events",
+    content: null,
   },
   {
     title: "About",
     path: "/about",
+    content: null,
   },
   {
     title: "Notices",
     path: "/notices",
+    content: null,
   },
   {
     title: "Contact",
     path: "/contact",
+    content: null,
+  },
+  {
+    title: "Study Materials",
+    path: null,                    // no direct link — opens dropdown instead
+    content: [
+      { title: "Entrance Exam", path: "https://mock.csitabmc.com/" },
+      { title: "Semester Exam", path: "/study-materials" },
+    ],
   },
 ];
 
