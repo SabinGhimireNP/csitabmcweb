@@ -24,6 +24,8 @@ export const siteConfig = {
         "Hackathons Nepal",
         "Workshops Butwal",
         "Student Tech Community",
+        "BSc CSIT",
+        "CSIT Entrance",
         "Rupandehi",
         "Nepal",
     ] as string[],
