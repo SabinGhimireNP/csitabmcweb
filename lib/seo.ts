@@ -269,3 +269,68 @@ export function generateMemberMetadata(member: {
         keywords: [member.fullName, member.post || "", "CSIT Association", "Team"],
     });
 }
+
+// =============================================================================
+// Past Paper-Specific Metadata Generator
+// =============================================================================
+
+export function generatePastPapersListMetadata(): Metadata {
+  return generatePageMetadata({
+    title: `Past Year Papers - ${siteConfig.name}`,
+    description:
+      "Access CSIT past year board exam papers and model sets for all 8 semesters. Free study resources for BSc.CSIT students at Butwal Multiple Campus.",
+    canonical: `${siteConfig.url}/study-material/past-papers`,
+    ogImage: buildOgImageUrl({
+      title: "Past Year Papers",
+      subtitle: "Board Exams & Model Sets",
+      type: "page",
+    }),
+    keywords: [
+      "CSIT Past Papers",
+      "BSc CSIT Exam Papers",
+      "CSIT Model Set",
+      "TU CSIT Question Papers",
+      "CSIT Semester Papers",
+      "Butwal Multiple Campus CSIT",
+      "CSIT Association BMC",
+      "CSIT Board Exam",
+    ],
+  });
+}
+ 
+// ── Per-paper detail page (e.g. /past-papers/csc115-2026-board-exam) ──────────
+// Use this when you add individual paper detail/slug pages.
+export function generatePastPaperMetadata(paper: {
+  subject_code: string;
+  subject_name: string;
+  semester: number;
+  exam_year: number;
+  model_set: boolean;
+  slug: string;
+}): Metadata {
+  const label = paper.model_set ? "Model Set" : "Board Exam";
+  const title = `${paper.subject_code} ${paper.exam_year} ${label} - Semester ${paper.semester} | ${siteConfig.name}`;
+  const description = `Download or view the ${paper.exam_year} ${label} question paper for ${paper.subject_name} (${paper.subject_code}), Semester ${paper.semester} of BSc.CSIT at Butwal Multiple Campus.`;
+ 
+  return generatePageMetadata({
+    title,
+    description,
+    canonical: `${siteConfig.url}/study-material/past-papers/${paper.slug}`,
+    ogImage: buildOgImageUrl({
+      title: `${paper.subject_code} ${paper.exam_year}`,
+      subtitle: `${label} · Semester ${paper.semester}`,
+      type: "page",
+    }),
+    ogType: "article",
+    keywords: [
+      paper.subject_name,
+      paper.subject_code,
+      `Semester ${paper.semester}`,
+      `${paper.exam_year} Board Exam`,
+      "CSIT Past Paper",
+      "BSc CSIT",
+      "TU Question Paper",
+      "CSIT Association BMC",
+    ],
+  });
+}

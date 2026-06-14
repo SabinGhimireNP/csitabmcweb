@@ -1,5 +1,20 @@
 import { PastPaper, Semester } from "@/types/studyMaterials";
 
+// const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/past-papers/`, {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//     "Authorization": `Bearer ${token}`,   // if your API is auth-protected
+//   },
+//   body: JSON.stringify({
+//     subject_code,
+//     semester,
+//     model_set,
+//     exam_year,
+//     drive_link,
+//   }),
+// });
+
 // ─── Semesters ────────────────────────────────────────────────────────────────
 // Replace with: GET /api/v1/semesters/
 export const SEMESTERS: Semester[] = [
