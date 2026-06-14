@@ -1,33 +1,35 @@
 // app/(study-material)/past-papers/page.tsx
 
-import type { Metadata } from "next";
-import { SEMESTERS } from "./_components/data";
-import PastPapersClient from "./_components/Pastpapersclient";
+import { generatePageMetadata, buildOgImageUrl, siteConfig } from "@/lib/seo";
+import { SEMESTERS } from "./_components/data"; // Import the semesters array
+import PastPapersClient from "./_components/Pastpapersclient"; // Import the client component
 
-export const metadata: Metadata = {
-  title: "Past Year Papers | CSIT Study Materials – ABMC",
+export const metadata = generatePageMetadata({
+  title: `Past Year Papers - ${siteConfig.name}`,
   description:
-    "Download and view CSIT past year exam papers and model sets for all 8 semesters. Free study resources for BSc.CSIT students at ABMC College.",
+    "Access CSIT past year board exam papers and model sets for all 8 semesters. Free study resources for BSc.CSIT students at Butwal Multiple Campus.",
+  canonical: `${siteConfig.url}/study-material/past-papers`,
+  ogImage: buildOgImageUrl({
+    title: "Past Year Papers",
+    subtitle: "Board Exams & Model Sets",
+    type: "page",
+  }),
   keywords: [
-    "CSIT past papers",
-    "BSc CSIT exam papers",
-    "CSIT model set",
-    "CSIT semester papers",
-    "ABMC CSIT",
-    "TU CSIT past questions",
+    "CSIT Past Papers",
+    "BSc CSIT Exam Papers",
+    "CSIT Model Set",
+    "TU CSIT Question Papers",
+    "CSIT Semester Papers",
+    "Butwal Multiple Campus CSIT",
+    "CSIT Association BMC",
+    "CSIT Board Exam",
   ],
-  openGraph: {
-    title: "Past Year Papers | CSIT Study Materials",
-    description:
-      "Browse past exam papers and model sets for all 8 semesters of BSc.CSIT at ABMC College.",
-    type: "website",
-  },
-};
+});
 
 export default function PastPapersPage() {
   return (
     <main className="min-h-screen bg-slate-50">
-      <div className="max-w-6xl mx-auto px-1 sm:px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-4 py-10">
         <PastPapersClient semesters={SEMESTERS} />
       </div>
     </main>
