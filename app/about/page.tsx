@@ -27,7 +27,7 @@ export const metadata: Metadata = generatePageMetadata({
 export default function About() {
   const stats = [
     { label: "Founded", value: "2016 AD" },
-    { label: "Executive members", value: "15" },
+    { label: "Executive members", value: "16" },
     { label: "Community events", value: "110+" },
     { label: "Students Impacted", value: "10000+" },
     { label: "Partnered Org.", value: "100+" },
@@ -62,7 +62,7 @@ export default function About() {
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="flex flex-col gap-3 text-left">
             <h1 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
-              Student-led community for learners at Butwal
+              Student-Led Community for Learners at Butwal
             </h1>
 
           </div>
