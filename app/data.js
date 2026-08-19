@@ -31,6 +31,7 @@ export const NavLinkPaths = [
     content: [
       { title: "Entrance Exam", path: "https://mock.csitabmc.com/" },
       { title: "Semester Exam", path: "/study-materials" },
+      // { title: "Semester Exam", path: "/study-materials" },
     ],
   },
 ];
