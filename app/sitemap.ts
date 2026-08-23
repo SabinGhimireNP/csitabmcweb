@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 type ChangeFrequency =
     | "always"
     | "hourly"
@@ -31,16 +33,40 @@ const staticRoutes: Array<{
         { path: "/certificate", changeFrequency: "monthly", priority: 0.5 },
     ];
 
+// Fetch with timeout to prevent build hanging
+async function fetchWithTimeout(
+    url: string,
+    options: RequestInit = {},
+    timeoutMs = 5000
+): Promise<Response> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        return await fetch(url, {
+            ...options,
+            signal: controller.signal,
+        });
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
 // Fetch dynamic events from Strapi
 async function fetchEvents(): Promise<
     Array<{ documentId: string; updatedAt: string }>
 > {
+    const apiUrl = process.env.STRAPI_API_URL;
+    const apiToken = process.env.STRAPI_API_TOKEN;
+
+    if (!apiUrl || !apiToken) return [];
+
     try {
-        const res = await fetch(
-            `${process.env.STRAPI_API_URL}/events?fields[0]=documentId&fields[1]=updatedAt`,
+        const res = await fetchWithTimeout(
+            `${apiUrl}/events?fields[0]=documentId&fields[1]=updatedAt`,
             {
                 headers: {
-                    Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+                    Authorization: `Bearer ${apiToken}`,
                 },
                 next: { revalidate: 3600 },
             }
@@ -58,12 +84,17 @@ async function fetchEvents(): Promise<
 async function fetchNotices(): Promise<
     Array<{ documentId: string; updatedAt: string }>
 > {
+    const apiUrl = process.env.STRAPI_API_URL;
+    const apiToken = process.env.STRAPI_API_TOKEN;
+
+    if (!apiUrl || !apiToken) return [];
+
     try {
-        const res = await fetch(
-            `${process.env.STRAPI_API_URL}/notices?fields[0]=documentId&fields[1]=updatedAt`,
+        const res = await fetchWithTimeout(
+            `${apiUrl}/notices?fields[0]=documentId&fields[1]=updatedAt`,
             {
                 headers: {
-                    Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+                    Authorization: `Bearer ${apiToken}`,
                 },
                 next: { revalidate: 3600 },
             }
@@ -81,12 +112,17 @@ async function fetchNotices(): Promise<
 async function fetchMembers(): Promise<
     Array<{ documentId: string; updatedAt: string }>
 > {
+    const apiUrl = process.env.STRAPI_API_URL;
+    const apiToken = process.env.STRAPI_API_TOKEN;
+
+    if (!apiUrl || !apiToken) return [];
+
     try {
-        const res = await fetch(
-            `${process.env.STRAPI_API_URL}/members?fields[0]=documentId&fields[1]=updatedAt`,
+        const res = await fetchWithTimeout(
+            `${apiUrl}/members?fields[0]=documentId&fields[1]=updatedAt`,
             {
                 headers: {
-                    Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+                    Authorization: `Bearer ${apiToken}`,
                 },
                 next: { revalidate: 3600 },
             }

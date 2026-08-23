@@ -111,12 +111,16 @@ export default async function EventPage({
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 ">
-            <h2 className="text-2xl font-bold mb-4">Speakers</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-              {event.mentors.map((mentor, index) => (
-                <EventMentor key={index} id={mentor.documentId} />
-              ))}
-            </div>
+            {event.mentors?.length > 0 && (
+              <>
+                <h2 className="text-2xl font-bold mb-4">Speakers</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                  {event.mentors.map((mentor, index) => (
+                    <EventMentor key={index} id={mentor.documentId} />
+                  ))}
+                </div>
+              </>
+            )}
             <h2 className="border-b border-gray-200 py-2 mb-4 font-semibold text-xl">
               About Event
             </h2>
@@ -142,7 +146,7 @@ export default async function EventPage({
                   registrationFee={event.registrationFee}
                 />
               </div>
-
+{/* 
               {(event.registrationFeeBMC || event.registrationFee) &&
                 event.registrationOpen && (
                   <Link href="/check/registration">
@@ -150,7 +154,7 @@ export default async function EventPage({
                       Verify Registration
                     </Button>
                   </Link>
-                )}
+                )} */}
 
               {event.registrationOpen && event.registrationFormUrl ? (
                 <Link href={event.registrationFormUrl} target="_blank">
