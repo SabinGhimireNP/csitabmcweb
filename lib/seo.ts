@@ -213,17 +213,20 @@ export function generateNoticeMetadata(notice: {
     description?: string;
     slug: string;
     publishedAt?: string;
+    image?: string;
 }): Metadata {
     const title = `${notice.title} - Notices | ${siteConfig.name}`;
     const description =
         notice.description ||
         `Official notice from ${siteConfig.name}: ${notice.title}`;
     const canonical = `${siteConfig.url}/notices/${notice.slug}`;
-    const ogImage = buildOgImageUrl({
-        title: notice.title,
-        subtitle: "Notice",
-        type: "notice",
-    });
+    const ogImage =
+        notice.image ||
+        buildOgImageUrl({
+            title: notice.title,
+            subtitle: "Notice",
+            type: "notice",
+        });
 
     return generatePageMetadata({
         title,
@@ -270,6 +273,69 @@ export function generateMemberMetadata(member: {
     });
 }
 
+export function generateTenureMemberMetadata(member: {
+    fullName: string;
+    post?: string;
+    description?: string;
+    tenureSlug: string;
+    tenureName: string;
+    slug: string;
+    image?: string;
+}): Metadata {
+    const title = `${member.fullName} (${member.post || "Team Member"}, ${member.tenureName}) - ${siteConfig.name}`;
+    const description =
+        member.description?.substring(0, 160) ||
+        `Learn about ${member.fullName}, ${member.post || "Team Member"} (${member.tenureName}) at ${siteConfig.name}.`;
+    const canonical = `${siteConfig.url}/mb/${member.tenureSlug}/${member.slug}`;
+    const ogImage =
+        member.image ||
+        buildOgImageUrl({
+            title: member.fullName,
+            subtitle: `${member.post || "Team Member"} • ${member.tenureName}`,
+            type: "page",
+        });
+
+    return generatePageMetadata({
+        title,
+        description,
+        canonical,
+        ogImage,
+        ogType: "profile",
+        keywords: [member.fullName, member.post || "", member.tenureName, "CSIT Association", "Team"],
+    });
+}
+
+export function generateAlumniProfileMetadata(alumni: {
+    fullName: string;
+    graduationYear?: number | string | null;
+    bio?: string;
+    slug: string;
+    image?: string;
+}): Metadata {
+    const batchText = alumni.graduationYear ? `Batch of ${alumni.graduationYear}` : "Alumni";
+    const title = `${alumni.fullName} (${batchText}) - Alumni | ${siteConfig.name}`;
+    const description =
+        alumni.bio?.substring(0, 160) ||
+        `Learn about ${alumni.fullName}, distinguished alumnus (${batchText}) of ${siteConfig.name}.`;
+    const canonical = `${siteConfig.url}/al/${alumni.slug}`;
+    const ogImage =
+        alumni.image ||
+        buildOgImageUrl({
+            title: alumni.fullName,
+            subtitle: `Alumni • ${batchText}`,
+            type: "page",
+        });
+
+    return generatePageMetadata({
+        title,
+        description,
+        canonical,
+        ogImage,
+        ogType: "profile",
+        keywords: [alumni.fullName, "Alumni", batchText, "CSIT Association", "BMC"],
+    });
+}
+
 // =============================================================================
 // Past Paper-Specific Metadata Generator
 // =============================================================================
@@ -279,7 +345,7 @@ export function generatePastPapersListMetadata(): Metadata {
     title: `Past Year Papers - ${siteConfig.name}`,
     description:
       "Access CSIT past year board exam papers and model sets for all 8 semesters. Free study resources for BSc.CSIT students at Butwal Multiple Campus.",
-    canonical: `${siteConfig.url}/study-material/past-papers`,
+    canonical: `${siteConfig.url}/study-materials/past-papers`,
     ogImage: buildOgImageUrl({
       title: "Past Year Papers",
       subtitle: "Board Exams & Model Sets",
@@ -315,7 +381,7 @@ export function generatePastPaperMetadata(paper: {
   return generatePageMetadata({
     title,
     description,
-    canonical: `${siteConfig.url}/study-material/past-papers/${paper.slug}`,
+    canonical: `${siteConfig.url}/study-materials/past-papers/${paper.slug}`,
     ogImage: buildOgImageUrl({
       title: `${paper.subject_code} ${paper.exam_year}`,
       subtitle: `${label} · Semester ${paper.semester}`,
@@ -331,6 +397,45 @@ export function generatePastPaperMetadata(paper: {
       "BSc CSIT",
       "TU Question Paper",
       "CSIT Association BMC",
+    ],
+  });
+}
+
+// ── Per-blog detail page (e.g. /blogs/how-to-start-web-development) ───────────
+export function generateBlogMetadata(blog: {
+  title: string;
+  excerpt?: string;
+  slug: string;
+  image?: string;
+  publishedAt?: string | null;
+  authorName?: string;
+}): Metadata {
+  const title = `${blog.title} - ${siteConfig.name}`;
+  const description =
+    blog.excerpt ||
+    `Read ${blog.title} on CSIT Association of BMC. Explore tutorials, student tech insights, and community stories.`;
+  const canonical = `${siteConfig.url}/blogs/${blog.slug}`;
+
+  return generatePageMetadata({
+    title,
+    description,
+    canonical,
+    ogImage:
+      blog.image ||
+      buildOgImageUrl({
+        title: blog.title,
+        subtitle: blog.authorName ? `By ${blog.authorName}` : "CSITABMC Blog",
+        type: "page",
+      }),
+    ogType: "article",
+    publishedTime: blog.publishedAt || undefined,
+    authors: blog.authorName ? [blog.authorName] : undefined,
+    keywords: [
+      "CSIT Blog",
+      "CSIT Association Article",
+      "Tech Blog Butwal",
+      "BSc CSIT Insights",
+      "Student Tech Community Nepal",
     ],
   });
 }

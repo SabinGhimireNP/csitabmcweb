@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import "./markdown.css";
-import NavBar from "@/components/custom/NavBar/NavBar";
-import Footer from "@/components/custom/Footer";
-import NextTopLoader from "nextjs-toploader";
+import NavBar from "@/components/shared/NavBar/NavBar";
+import Footer from "@/components/shared/Footer";
+import LoadingIndicator from "@/components/shared/LoadingIndicator";
 import { Toaster } from "@/components/ui/toaster";
 import { siteConfig, buildOgImageUrl } from "@/lib/seo";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/lib/structured-data";
-import MicrosoftClarity from "@/components/custom/MicrosoftClarity";
+import MicrosoftClarity from "@/components/shared/MicrosoftClarity";
+import { QueryProvider } from "@/providers/QueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -93,13 +94,15 @@ export default function RootLayout({
         <WebsiteJsonLd />
       </head>
       <body className={poppins.className}>
-        <NextTopLoader showSpinner={false} color="red" />
+        <LoadingIndicator />
         <nav className="bg-background/60 backdrop-blur-xl shadow-sm fixed z-50 w-full top-0">
           <NavBar />
         </nav>
         <Toaster />
         <div className="bg-white h-[72px]" />
-        {children}
+        <QueryProvider>
+          {children}
+        </QueryProvider>
         <Footer />
       </body>
     </html>
